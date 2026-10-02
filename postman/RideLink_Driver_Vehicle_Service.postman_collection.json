@@ -1,0 +1,365 @@
+{
+  "info": {
+    "_postman_id": "c58e8b23-492e-4b67-bf11-9876543210ab",
+    "name": "RideLink Driver & Vehicle Service API",
+    "description": "Postman collection for Service 2: Driver & Vehicle Service (IT3130 RideLink Backend)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8082",
+      "type": "string"
+    },
+    {
+      "key": "driverToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "driverId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "vehicleId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "4",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Drivers",
+      "item": [
+        {
+          "name": "Create Driver Profile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": {{userId}},\n  \"licenseNumber\": \"B1234567\",\n  \"serviceArea\": \"Colombo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers"]
+            }
+          }
+        },
+        {
+          "name": "Get Driver by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Driver by Account UserId",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/user/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "user", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"licenseNumber\": \"B1234567\",\n  \"serviceArea\": \"Colombo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver Availability",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"availability\": \"AVAILABLE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}/availability",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}", "availability"]
+            }
+          }
+        },
+        {
+          "name": "Update Simulated Location",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 6.9271,\n  \"longitude\": 79.8612\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}/location",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}", "location"]
+            }
+          }
+        },
+        {
+          "name": "Find Eligible Available Drivers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/available?area=Colombo",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "available"],
+              "query": [
+                {
+                  "key": "area",
+                  "value": "Colombo"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vehicles",
+      "item": [
+        {
+          "name": "Add Vehicle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicleNumber\": \"CAB-1234\",\n  \"vehicleType\": \"CAR\",\n  \"model\": \"Toyota Prius\",\n  \"color\": \"White\",\n  \"year\": 2022\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}/vehicles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "List Driver Vehicles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}/vehicles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Get Vehicle by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/{{vehicleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", "{{vehicleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Vehicle",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicleNumber\": \"CAB-1234\",\n  \"vehicleType\": \"CAR\",\n  \"model\": \"Toyota Prius Hybrid\",\n  \"color\": \"Pearl White\",\n  \"year\": 2023\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/{{vehicleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", "{{vehicleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Vehicle",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/vehicles/{{vehicleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "vehicles", "{{vehicleId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Negative Scenarios",
+      "item": [
+        {
+          "name": "Duplicate License (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": {{userId}},\n  \"licenseNumber\": \"B1234567\",\n  \"serviceArea\": \"Colombo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers"]
+            }
+          }
+        },
+        {
+          "name": "Invalid Coordinates (400)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{driverToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"latitude\": 99.0,\n  \"longitude\": 190.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}/location",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}", "location"]
+            }
+          }
+        },
+        {
+          "name": "Unauthorized Driver Access (401)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/drivers/{{driverId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "drivers", "{{driverId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

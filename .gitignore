@@ -1,0 +1,35 @@
+# Maven build output
+target/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+application-local.properties
+application-*.local.properties
+
+# Logs and runtime output
+*.log
+logs/
+
+# Java crash dumps
+hs_err_pid*
+replay_pid*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
