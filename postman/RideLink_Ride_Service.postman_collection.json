@@ -1,0 +1,316 @@
+{
+  "info": {
+    "_postman_id": "d748f219-482a-4315-9988-123456789abc",
+    "name": "RideLink Ride Management Service API",
+    "description": "Postman collection for Service 3: Ride Management Service (IT3130 RideLink Backend)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8083",
+      "type": "string"
+    },
+    {
+      "key": "passengerToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "driverToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "rideId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "driverId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Create Ride Request (Passenger)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pickupLocation\": \"Colombo Fort\",\n  \"destinationLocation\": \"Bandaranaike International Airport, Katunayake\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/rides",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides"]
+        }
+      }
+    },
+    {
+      "name": "2. Get Ride By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}"]
+        }
+      }
+    },
+    {
+      "name": "3. Get My Rides (Passenger History)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/my",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "my"]
+        }
+      }
+    },
+    {
+      "name": "4. Assign Driver (Interservice Driver Service Match)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"driverId\": {{driverId}}\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}/assign",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}", "assign"]
+        }
+      }
+    },
+    {
+      "name": "5. Accept Assigned Ride (Driver)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{driverToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}/accept",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}", "accept"]
+        }
+      }
+    },
+    {
+      "name": "6. Start Ride (Driver)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{driverToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}/start",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}", "start"]
+        }
+      }
+    },
+    {
+      "name": "7. Complete Ride (Driver)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{driverToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}/complete",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}", "complete"]
+        }
+      }
+    },
+    {
+      "name": "8. Get Driver Assigned Rides",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{driverToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/driver/{{driverId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "driver", "{{driverId}}"]
+        }
+      }
+    },
+    {
+      "name": "9. Cancel Ride (Passenger / Driver / Admin)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reason\": \"Change of schedule\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}/cancel",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}", "cancel"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Missing Auth Token (401)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pickupLocation\": \"Colombo Fort\",\n  \"destinationLocation\": \"Airport\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/rides",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Validation Error Blank Location (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pickupLocation\": \"\",\n  \"destinationLocation\": \"\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/rides",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Invalid State Transition (Start Before Accept) (400)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{driverToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}/start",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}", "start"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Cancel Completed Ride (400)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/{{rideId}}/cancel",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "{{rideId}}", "cancel"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Non-existent Ride ID (404)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/rides/99999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "rides", "99999"]
+        }
+      }
+    }
+  ]
+}
