@@ -12,5 +12,6 @@
     <modules>
         <module>account-service</module>
         <module>driver-vehicle-service</module>
+        <module>ride-service</module>
     </modules>
 </project>

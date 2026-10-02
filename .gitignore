@@ -1,5 +1,6 @@
 # Maven build output
 target/
+**/target/
 
 # IDE files
 .idea/
@@ -33,3 +34,7 @@ desktop.ini
 *.temp
 *.swp
 *.swo
+
+# Maven wrapper
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
