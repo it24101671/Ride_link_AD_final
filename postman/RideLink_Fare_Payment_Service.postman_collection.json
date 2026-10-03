@@ -1,0 +1,276 @@
+{
+  "info": {
+    "_postman_id": "e812d321-591a-4567-9101-abcdef123456",
+    "name": "RideLink Fare & Payment Service API",
+    "description": "Postman collection for Service 4: Fare & Payment Service (IT3130 RideLink Backend)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8084",
+      "type": "string"
+    },
+    {
+      "key": "passengerToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "driverToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "rideId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "paymentId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Estimate Fare (Public / Interservice)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pickupLocation\": \"Colombo Fort\",\n  \"destinationLocation\": \"Bandaranaike International Airport, Katunayake\",\n  \"distanceKm\": 32.50,\n  \"durationMinutes\": 45\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/fares/estimate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "fares", "estimate"]
+        }
+      }
+    },
+    {
+      "name": "2. Calculate Final Fare (Completed Ride)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rideId\": {{rideId}},\n  \"pickupLocation\": \"Colombo Fort\",\n  \"destinationLocation\": \"Bandaranaike International Airport, Katunayake\",\n  \"distanceKm\": 32.50,\n  \"durationMinutes\": 45\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/fares/calculate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "fares", "calculate"]
+        }
+      }
+    },
+    {
+      "name": "3. Get Fare By Ride ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/fares/ride/{{rideId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "fares", "ride", "{{rideId}}"]
+        }
+      }
+    },
+    {
+      "name": "4. Process Simulated Payment (Card - Success)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rideId\": {{rideId}},\n  \"paymentMethod\": \"CARD\",\n  \"amount\": 2520.00,\n  \"paymentToken\": \"tok_visa_valid\",\n  \"simulateFailure\": false\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/payments",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "payments"]
+        }
+      }
+    },
+    {
+      "name": "5. Get Payment By ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/payments/{{paymentId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "payments", "{{paymentId}}"]
+        }
+      }
+    },
+    {
+      "name": "6. Get Payment By Ride ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/payments/ride/{{rideId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "payments", "ride", "{{rideId}}"]
+        }
+      }
+    },
+    {
+      "name": "7. Get Payment Receipt",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/receipts/{{paymentId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "receipts", "{{paymentId}}"]
+        }
+      }
+    },
+    {
+      "name": "8. Get Receipt By Ride ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/receipts/ride/{{rideId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "receipts", "ride", "{{rideId}}"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Missing Auth Token (401)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rideId\": 1,\n  \"paymentMethod\": \"CARD\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/payments",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "payments"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Validation Error Missing RideId (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"paymentMethod\": \"CARD\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/payments",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "payments"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Prevent Duplicate Payment (409 Conflict)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rideId\": {{rideId}},\n  \"paymentMethod\": \"CARD\",\n  \"amount\": 2520.00\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/payments",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "payments"]
+        }
+      }
+    },
+    {
+      "name": "Negative - Non-existent Payment ID (404)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{passengerToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/payments/99999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "payments", "99999"]
+        }
+      }
+    }
+  ]
+}
