@@ -1,0 +1,77 @@
+﻿name: RideLink CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-and-test:
+    name: Build and Test All Services
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout source code ──────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Set up Java 17 (matches pom.xml <java.version>17</java.version>) ─
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven          # caches ~/.m2 between runs for faster builds
+
+      # ── 3. Build & test each service (H2 in-memory DB used for tests) ────────
+
+      - name: Build & Test – account-service
+        run: mvn -B clean verify --no-transfer-progress
+        working-directory: account-service
+
+      - name: Build & Test – driver-vehicle-service
+        run: mvn -B clean verify --no-transfer-progress
+        working-directory: driver-vehicle-service
+
+      - name: Build & Test – fare-payment-service
+        run: mvn -B clean verify --no-transfer-progress
+        working-directory: fare-payment-service
+
+      - name: Build & Test – ride-service
+        run: mvn -B clean verify --no-transfer-progress
+        working-directory: ride-service
+
+      # ── 4. Upload test reports as artifacts (visible in Actions UI) ───────────
+      - name: Upload test results – account-service
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-account-service
+          path: account-service/target/surefire-reports/
+
+      - name: Upload test results – driver-vehicle-service
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-driver-vehicle-service
+          path: driver-vehicle-service/target/surefire-reports/
+
+      - name: Upload test results – fare-payment-service
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-fare-payment-service
+          path: fare-payment-service/target/surefire-reports/
+
+      - name: Upload test results – ride-service
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-ride-service
+          path: ride-service/target/surefire-reports/
